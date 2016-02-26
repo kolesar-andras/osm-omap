@@ -24,10 +24,13 @@ class Symbol {
         if (in_array($tags['highway'], ['track', 'unsurfaced', 'bridleway', 'cycleway']))
             return 93; // code="505" name="Vehicle track"
 
-        if (in_array($tags['highway'], ['path']))
-            return 94; // code="505" name="Vehicle track"
+        if (in_array($tags['highway'], ['footway']))
+            return 94; // code="506" name="Footpath"
 
-        if (in_array($tags['highway'], ['tertiary']))
+        if (in_array($tags['highway'], ['path']))
+            return 95; // code="507" name="Small path"
+
+        if (in_array($tags['highway'], ['tertiary', 'unclassified', 'residential', 'service']))
             return 90; // code="503" name="Minor road"
 
         if (in_array($tags['highway'], ['primary', 'secondary']))
