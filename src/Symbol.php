@@ -53,6 +53,28 @@ class Symbol {
         if (in_array(@$tags['barrier'], ['retaining_wall', 'city_wall']))
             return 106; // code="521" name="High stone wall"
 
+        if (in_array(@$tags['natural'], ['water']))
+            return 45; // code="301" name="Lake"
+
+        if (in_array(@$tags['natural'], ['wetland']))
+            return 59; // code="311" name="Indistinct marsh"
+
+        if (in_array(@$tags['natural'], ['grassland']) ||
+            in_array(@$tags['landuse'], ['meadow', 'farmland']))
+            return 64; // code="401" name="Open land"
+
+        if (in_array(@$tags['natural'], ['heath']))
+            return 66; // code="403" name="Rough open land"
+
+        if (in_array(@$tags['landuse'], ['residential', 'allotments']))
+            return 113; // code="527" name="Settlement"
+
+        if (in_array(@$tags['landuse'], ['vineyard']))
+            return 79; // code="413" name="Vineyard"
+
+        if (isset($tags['building']) && $tags['building'] != 'no')
+            return 111; // code="526" name="Building"
+
         return -3; // magic number for unknown symbol
 
     }

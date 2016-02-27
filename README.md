@@ -15,8 +15,7 @@ Input file format of this converter is GeoJSON with projected coordinates and a 
     -lco WRITE_BBOX=YES \
     -sql "SELECT * FROM lines UNION ALL SELECT * FROM multipolygons" \
     map.geojson \
-    map.osm \
-    lines
+    map.osm
 
 Resulting GeoJSON file will be input of converter:
 
