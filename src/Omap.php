@@ -98,12 +98,19 @@ class Omap {
 
     public function createObjects($feature) {
         $symbol = Symbol::getSymbol($feature);
+        if (is_array($symbol)) {
+            $flags = sprintf(' flags="%d"', $symbol[1]);
+            $symbol = $symbol[0];
+        } else {
+            $flags = '';
+        }
         $coords = [];
         foreach ($feature['geometry']['coordinates'] as $coordinates) {
             $transformed = $this->transformCoordinates($coordinates);
-            $coords[] = sprintf('                       <coord x="%d" y="%d"/>',
+            $coords[] = sprintf('                       <coord x="%d" y="%d"%s/>',
                 $transformed[0],
-                $transformed[1]
+                $transformed[1],
+                $flags
             );
         }
         $this->objects[] = sprintf('                <object type="%d" symbol="%d">

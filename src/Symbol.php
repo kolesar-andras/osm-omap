@@ -42,6 +42,12 @@ class Symbol {
         if (in_array(@$tags['railway'], ['rail']))
             return 99; // code="515" name="Railway"
 
+        if (in_array(@$tags['power'], ['minor_line']))
+            return [100, 32]; // code="516" name="Power line"
+
+        if (in_array(@$tags['power'], ['line']))
+            return [101, 32]; // code="517" name="Major power line"
+
         return -3; // magic number for unknown symbol
 
     }
