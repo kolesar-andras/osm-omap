@@ -50,6 +50,9 @@ class Symbol {
         if (in_array(@$tags['barrier'], ['fence']))
             return 109; // code="524" name="High fence"
 
+        if (in_array(@$tags['barrier'], ['retaining_wall', 'city_wall']))
+            return 106; // code="521" name="High stone wall"
+
         return -3; // magic number for unknown symbol
 
     }
@@ -81,7 +84,12 @@ class Symbol {
             if (!is_array($array)) continue;
             $tags = array_merge($tags, $array);
         }
-        return $tags;
+        $response = [];
+        foreach ($tags as $key => $value) {
+            if ($value == '') continue;
+            $response[$key] = $value;
+        }
+        return $response;
     }
 
     /**

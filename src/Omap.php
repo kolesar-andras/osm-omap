@@ -98,6 +98,7 @@ class Omap {
 
     public function createObjects($feature) {
         $tags = Symbol::getTags($feature['properties']);
+        if (count($tags) == (isset($tags['osm_id']) ? 1 : 0)) return;
 
         $symbol = Symbol::getSymbol($tags);
         if (is_array($symbol)) {
