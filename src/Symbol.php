@@ -24,13 +24,14 @@ class Symbol {
         if (in_array(@$tags['highway'], ['track', 'unsurfaced', 'bridleway', 'cycleway']))
             return 93; // code="505" name="Vehicle track"
 
-        if (in_array(@$tags['highway'], ['footway']))
+        if (in_array(@$tags['highway'], ['footway', 'steps']) ||
+            in_array(@$tags['man_made'], ['pier']))
             return 94; // code="506" name="Footpath"
 
         if (in_array(@$tags['highway'], ['path']))
             return 95; // code="507" name="Small path"
 
-        if (in_array(@$tags['highway'], ['tertiary', 'unclassified', 'residential', 'service']))
+        if (in_array(@$tags['highway'], ['tertiary', 'unclassified', 'residential', 'service', 'living_street', 'pedestrian']))
             return 90; // code="503" name="Minor road"
 
         if (in_array(@$tags['highway'], ['primary', 'secondary']))
@@ -47,6 +48,9 @@ class Symbol {
 
         if (in_array(@$tags['power'], ['line']))
             return [101, 32]; // code="517" name="Major power line"
+
+        if (in_array(@$tags['barrier'], ['fence']))
+            return 109; // code="524" name="High fence"
 
         return -3; // magic number for unknown symbol
 
