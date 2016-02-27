@@ -3,7 +3,9 @@ Transform OpenStreetMap data to OpenOrienteering mapper files.
 
 ## Usage
 
-Input file file needs to be projected and have a bbox. Example command to create:
+Download OSM data. Go to http://openstreetmap.org/ and press Export button. It will export objects inside the current view by default. You can adjust zoom and set a custom bounding box. You will get an OSM XML file named `map.osm`. You can also use [JOSM](https://josm.openstreetmap.de/) editor for download data.
+
+Input file format of this converter is GeoJSON with projected coordinates and a computed bounding box. You can convert with the following command, customize EPSG code of projection for your area.
 
     ogr2ogr \
     -f GeoJSON \
@@ -18,7 +20,7 @@ Resulting GeoJSON file will be input of converter:
 
     ./osm-omap.php map.lines.geojson template.omap > output.omap
 
-You can open resulting file in [OpenOrienteering mapper](http://www.openorienteering.org/). Note that it is not possible to send modifications made in mapper back to OpenStreetMap. Please edit geometries in OpenStreetMap and convert file again. You can use .osm file saved from [JOSM](https://josm.openstreetmap.de/) editor just after uploading changes.
+You can open resulting file in [OpenOrienteering mapper](http://www.openorienteering.org/). Note that it is not possible to send modifications made in mapper back to OpenStreetMap. Please edit geometries in OpenStreetMap and convert file again. You can use .osm file saved from JOSM editor just after uploading changes.
 
 ## Notes
 

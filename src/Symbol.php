@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Asssign a ISOM symbol to features having OpenStreetMap tags
+ * Asssign ISOM symbol to features having OpenStreetMap tags
  * @author Kolesár András <kolesar@openstreetmap.hu>
  */
 
