@@ -7,6 +7,7 @@ Download OSM data. Go to http://openstreetmap.org/ and press Export button. It w
 
 Input file format of this converter is GeoJSON with projected coordinates and a computed bounding box. You can convert with the following command, customize EPSG code of projection for your area.
 
+    OSM_USE_CUSTOM_INDEXING=NO \
     ogr2ogr \
     -f GeoJSON \
     -t_srs EPSG:23700 \
