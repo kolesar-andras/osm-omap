@@ -29,8 +29,11 @@ class Symbol {
         if (in_array(@$tags['highway'], ['path']))
             return 95; // code="507" name="Small path"
 
-        if (in_array(@$tags['highway'], ['tertiary', 'unclassified', 'residential', 'service', 'living_street', 'pedestrian']))
+        if (in_array(@$tags['highway'], ['tertiary']))
             return 90; // code="503" name="Minor road"
+
+        if (in_array(@$tags['highway'], ['unclassified', 'residential', 'service', 'living_street', 'pedestrian']))
+            return 92; // code="504" name="Road"
 
         if (in_array(@$tags['highway'], ['primary', 'secondary']))
             return 88; // code="502" name="Major road, minimum width"
@@ -71,6 +74,9 @@ class Symbol {
 
         if (in_array(@$tags['landuse'], ['vineyard']))
             return 79; // code="413" name="Vineyard"
+
+        if (in_array(@$tags['landuse'], ['forest']))
+            return 69; // code="406" name="Forest: slow running"
 
         if (isset($tags['building']) && $tags['building'] != 'no')
             return 111; // code="526" name="Building"
