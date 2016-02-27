@@ -97,7 +97,9 @@ class Omap {
     }
 
     public function createObjects($feature) {
-        $symbol = Symbol::getSymbol($feature);
+        $tags = Symbol::getTags($feature['properties']);
+
+        $symbol = Symbol::getSymbol($tags);
         if (is_array($symbol)) {
             $flags = sprintf(' flags="%d"', $symbol[1]);
             $symbol = $symbol[0];
@@ -113,7 +115,18 @@ class Omap {
                 $flags
             );
         }
+        $tagsXml = [];
+        foreach ($tags as $key => $value) {
+            if ($value == '') continue;
+            $tagsXml[] = sprintf('                        <t k="%s">%s</t>',
+                htmlspecialchars($key, ENT_XML1, 'UTF-8'),
+                htmlspecialchars($value, ENT_XML1, 'UTF-8')
+            );
+        }
         $this->objects[] = sprintf('                <object type="%d" symbol="%d">
+                    <tags>
+%s
+                    </tags>
                     <coords count="%d">
 %s
                     </coords>
@@ -121,7 +134,7 @@ class Omap {
                         <coord x="0" y="0"/>
                     </pattern>
                 </object>',
-            1, $symbol, count($coords), implode("\n", $coords)
+            1, $symbol, implode("\n", $tagsXml), count($coords), implode("\n", $coords)
         );
     }
 }

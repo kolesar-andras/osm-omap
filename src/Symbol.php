@@ -14,12 +14,10 @@ class Symbol {
      * This way there is no need to parse template XML for codes.
      * ISOM numbers and names are displayed in comments.
      *
-     * @param $feature that has properties tag (GeoJSON)
+     * @param $tags as associative array
      * @return id of symbol
      */
-    static function getSymbol($feature) {
-
-        $tags = static::getTags($feature['properties']);
+    static function getSymbol($tags) {
 
         if (in_array(@$tags['highway'], ['track', 'unsurfaced', 'bridleway', 'cycleway']))
             return 93; // code="505" name="Vehicle track"
@@ -79,6 +77,7 @@ class Symbol {
         foreach (['other_tags', 'all_tags'] as $column) {
             if (!isset($tags[$column])) continue;
             $array = static::decodeHstore($tags[$column]);
+            unset($tags[$column]);
             if (!is_array($array)) continue;
             $tags = array_merge($tags, $array);
         }
