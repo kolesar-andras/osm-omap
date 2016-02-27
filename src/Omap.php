@@ -26,7 +26,6 @@ class Omap {
         $this->setBoundingBox($this->data['bbox']);
         $this->setProjection($this->data['crs']['properties']['name']);
         $this->setCenter();
-        $this->processFeatures($this->data['features']);
     }
 
     public function setBoundingBox($bbox) {
