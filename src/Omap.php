@@ -101,19 +101,10 @@ class Omap {
 
         $symbol = Symbol::getSymbol($tags);
         if (is_array($symbol)) {
-            $flags = sprintf(' flags="%d"', $symbol[1]);
+            $flags = $symbol[1];
             $symbol = $symbol[0];
         } else {
             $flags = '';
-        }
-        $coords = [];
-        foreach ($feature['geometry']['coordinates'] as $coordinates) {
-            $transformed = $this->transformCoordinates($coordinates);
-            $coords[] = sprintf('                       <coord x="%d" y="%d"%s/>',
-                $transformed[0],
-                $transformed[1],
-                $flags
-            );
         }
         $tagsXml = [];
         foreach ($tags as $key => $value) {
@@ -123,6 +114,7 @@ class Omap {
                 htmlspecialchars($value, ENT_XML1, 'UTF-8')
             );
         }
+        $coords = $this->getCoords($feature, $flags);
         $this->objects[] = sprintf('                <object type="%d" symbol="%d">
                     <tags>
 %s
@@ -135,6 +127,40 @@ class Omap {
                     </pattern>
                 </object>',
             1, $symbol, implode("\n", $tagsXml), count($coords), implode("\n", $coords)
+        );
+    }
+
+    public function getCoords($feature, $flags) {
+        $coords = [];
+        switch ($feature['geometry']['type']) {
+            case 'LineString':
+                foreach ($feature['geometry']['coordinates'] as $coordinates) {
+                    $coords[] = $this->getCoord($coordinates, $flags);
+                }
+                break;
+
+            case 'MultiPolygon':
+                foreach ($feature['geometry']['coordinates'] as $rings) {
+                    foreach ($rings as $ring) {
+                        $count = 0;
+                        $total = count($ring);
+                        foreach ($ring as $coordinates) {
+                            $flag = (++$count == $total) ? 18 : 0;
+                            $coords[] = $this->getCoord($coordinates, $flags | $flag);
+                        }
+                    }
+                }
+                break;
+        }
+        return $coords;
+    }
+
+    public function getCoord($coordinates, $flags) {
+        $transformed = $this->transformCoordinates($coordinates);
+        return sprintf('                       <coord x="%d" y="%d"%s/>',
+            $transformed[0],
+            $transformed[1],
+            $flags ? sprintf(' flags="%d"', $flags) : ''
         );
     }
 }
