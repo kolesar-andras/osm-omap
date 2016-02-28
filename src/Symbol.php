@@ -19,6 +19,16 @@ class Symbol {
      */
     static function getSymbol($tags) {
 
+        if (in_array(@$tags['highway'], ['primary', 'secondary']) ||
+            in_array(@$tags['highway'], ['tertiary', 'unclassified']) && @$tags['width']>5)
+            return 88; // code="502" name="Major road, minimum width"
+
+        if (in_array(@$tags['highway'], ['tertiary']))
+            return 90; // code="503" name="Minor road"
+
+        if (in_array(@$tags['highway'], ['unclassified', 'residential', 'service', 'living_street', 'pedestrian']))
+            return 92; // code="504" name="Road"
+
         if (in_array(@$tags['highway'], ['track', 'unsurfaced', 'bridleway', 'cycleway']))
             return 93; // code="505" name="Vehicle track"
 
@@ -28,15 +38,6 @@ class Symbol {
 
         if (in_array(@$tags['highway'], ['path']))
             return 95; // code="507" name="Small path"
-
-        if (in_array(@$tags['highway'], ['tertiary']))
-            return 90; // code="503" name="Minor road"
-
-        if (in_array(@$tags['highway'], ['unclassified', 'residential', 'service', 'living_street', 'pedestrian']))
-            return 92; // code="504" name="Road"
-
-        if (in_array(@$tags['highway'], ['primary', 'secondary']))
-            return 88; // code="502" name="Major road, minimum width"
 
         if (in_array(@$tags['waterway'], ['stream', 'ditch', 'canal']))
             return 50; // code="305" name="Crossable watercourse"
