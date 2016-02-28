@@ -30,11 +30,12 @@ Currently only lines are transformed and only a few styles are mapped.
 Avoid using projections where projection unit is not meter, for example Spherical Mercator EPSG:3857. OpenOrienteering mapper does not handle these (yet).
 
 ## Features
-* convert lines and multipolygons
-* copy all OSM tags
+* converts points, lines and multipolygons
+* copies all OSM tags
+* rotates patterns using direction tag
 
 ## TODO
-* handle points
 * map all ISOM codes to OSM tags
 * concatenate lines
 * create splines from polylines (depending on style, exclude power lines and similar linear features)
+* adjust pattern rotation to true north

@@ -109,13 +109,14 @@ class Omap {
         }
         $coordsXml = $this->getCoordsXml($feature, $flags);
         $tagsXml = $this->getTagsXml($tags);
-        $this->addObject($symbol, $tagsXml, $coordsXml);
+        $direction = @$tags['direction'];
+        $this->addObject($symbol, $tagsXml, $coordsXml, $direction);
         if ($distinct && !(@$tags['indistinct'] == 'yes')) {
             $this->addObject($distinct, $tagsXml, $coordsXml);
         }
     }
 
-    public function addObject($symbol, $tagsXml, $coordsXml) {
+    public function addObject($symbol, $tagsXml, $coordsXml, $direction=0) {
         $this->objects[] = sprintf('                <object type="%d" symbol="%d">
                     <tags>
 %s
@@ -123,7 +124,7 @@ class Omap {
                     <coords count="%d">
 %s
                     </coords>
-                    <pattern rotation="0">
+                    <pattern rotation="%s">
                         <coord x="0" y="0"/>
                     </pattern>
                 </object>',
@@ -131,7 +132,8 @@ class Omap {
             $symbol,
             implode("\n", $tagsXml),
             count($coordsXml),
-            implode("\n", $coordsXml)
+            implode("\n", $coordsXml),
+            $direction == 0 ? '0' : sprintf("%1.3f", -$direction / 180 * PI())
         );
     }
 
