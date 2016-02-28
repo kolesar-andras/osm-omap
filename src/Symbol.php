@@ -84,6 +84,12 @@ class Symbol {
         if (isset($tags['building']) && $tags['building'] != 'no')
             return 111; // code="526" name="Building"
 
+        if (in_array(@$tags['man_made'], ['tower', 'mast', 'water_tower']))
+            return 127; // code="535" name="High tower"
+
+        if (in_array(@$tags['amenity'], ['hunting_stand']))
+            return 128; // code="536" name="Small tower"
+
         return -3; // magic number for unknown symbol
 
     }

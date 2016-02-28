@@ -127,7 +127,7 @@ class Omap {
                         <coord x="0" y="0"/>
                     </pattern>
                 </object>',
-            1,
+            count($coordsXml) == 1 ? 0 : 1,
             $symbol,
             implode("\n", $tagsXml),
             count($coordsXml),
@@ -150,6 +150,10 @@ class Omap {
     public function getCoordsXml($feature, $flags) {
         $coordsXml = [];
         switch ($feature['geometry']['type']) {
+            case 'Point':
+                $coordsXml[] = $this->getCoord($feature['geometry']['coordinates'], $flags);
+                break;
+
             case 'LineString':
                 foreach ($feature['geometry']['coordinates'] as $coordinates) {
                     $coordsXml[] = $this->getCoord($coordinates, $flags);
