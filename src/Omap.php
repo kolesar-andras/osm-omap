@@ -100,14 +100,19 @@ class Omap {
         if (count($tags) == (isset($tags['osm_id']) ? 1 : 0)) return;
         $symbol = Symbol::getSymbol($tags);
         if (is_array($symbol)) {
-            $flags = $symbol[1];
+            $distinct = @$symbol[2];
+            $flags = @$symbol[1];
             $symbol = $symbol[0];
         } else {
-            $flags = '';
+            $distinct = false;
+            $flags = 0;
         }
         $coordsXml = $this->getCoordsXml($feature, $flags);
         $tagsXml = $this->getTagsXml($tags);
         $this->addObject($symbol, $tagsXml, $coordsXml);
+        if ($distinct && !(@$tags['indistinct'] == 'yes')) {
+            $this->addObject($distinct, $tagsXml, $coordsXml);
+        }
     }
 
     public function addObject($symbol, $tagsXml, $coordsXml) {

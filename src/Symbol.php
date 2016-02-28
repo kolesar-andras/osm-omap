@@ -67,16 +67,19 @@ class Symbol {
             return 64; // code="401" name="Open land"
 
         if (in_array(@$tags['natural'], ['heath']))
-            return 66; // code="403" name="Rough open land"
+            return [66, 0, 80]; // code="403" name="Rough open land"
+            // code="414" name="Distinct cultivation boundary"
 
         if (in_array(@$tags['landuse'], ['residential', 'allotments']))
             return 113; // code="527" name="Settlement"
 
         if (in_array(@$tags['landuse'], ['vineyard']))
-            return 79; // code="413" name="Vineyard"
+            return [79, 0, 80]; // code="413" name="Vineyard"
+            // code="414" name="Distinct cultivation boundary"
 
         if (in_array(@$tags['landuse'], ['forest']))
-            return 69; // code="406" name="Forest: slow running"
+            return [69, 0, 82]; // code="406" name="Forest: slow running"
+            // code="416" name="Distinct vegetation boundary"
 
         if (isset($tags['building']) && $tags['building'] != 'no')
             return 111; // code="526" name="Building"
