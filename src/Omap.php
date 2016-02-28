@@ -98,7 +98,6 @@ class Omap {
     public function createObjects($feature) {
         $tags = Symbol::getTags($feature['properties']);
         if (count($tags) == (isset($tags['osm_id']) ? 1 : 0)) return;
-
         $symbol = Symbol::getSymbol($tags);
         if (is_array($symbol)) {
             $flags = $symbol[1];
@@ -106,15 +105,12 @@ class Omap {
         } else {
             $flags = '';
         }
-        $tagsXml = [];
-        foreach ($tags as $key => $value) {
-            if ($value == '') continue;
-            $tagsXml[] = sprintf('                        <t k="%s">%s</t>',
-                htmlspecialchars($key, ENT_XML1, 'UTF-8'),
-                htmlspecialchars($value, ENT_XML1, 'UTF-8')
-            );
-        }
-        $coords = $this->getCoords($feature, $flags);
+        $coordsXml = $this->getCoordsXml($feature, $flags);
+        $tagsXml = $this->getTagsXml($tags);
+        $this->addObject($symbol, $tagsXml, $coordsXml);
+    }
+
+    public function addObject($symbol, $tagsXml, $coordsXml) {
         $this->objects[] = sprintf('                <object type="%d" symbol="%d">
                     <tags>
 %s
@@ -126,16 +122,32 @@ class Omap {
                         <coord x="0" y="0"/>
                     </pattern>
                 </object>',
-            1, $symbol, implode("\n", $tagsXml), count($coords), implode("\n", $coords)
+            1,
+            $symbol,
+            implode("\n", $tagsXml),
+            count($coordsXml),
+            implode("\n", $coordsXml)
         );
     }
 
-    public function getCoords($feature, $flags) {
-        $coords = [];
+    public function getTagsXml($tags) {
+        $tagsXml = [];
+        foreach ($tags as $key => $value) {
+            if ($value == '') continue;
+            $tagsXml[] = sprintf('                        <t k="%s">%s</t>',
+                htmlspecialchars($key, ENT_XML1, 'UTF-8'),
+                htmlspecialchars($value, ENT_XML1, 'UTF-8')
+            );
+        }
+        return $tagsXml;
+    }
+
+    public function getCoordsXml($feature, $flags) {
+        $coordsXml = [];
         switch ($feature['geometry']['type']) {
             case 'LineString':
                 foreach ($feature['geometry']['coordinates'] as $coordinates) {
-                    $coords[] = $this->getCoord($coordinates, $flags);
+                    $coordsXml[] = $this->getCoord($coordinates, $flags);
                 }
                 break;
 
@@ -146,13 +158,13 @@ class Omap {
                         $total = count($ring);
                         foreach ($ring as $coordinates) {
                             $flag = (++$count == $total) ? 18 : 0;
-                            $coords[] = $this->getCoord($coordinates, $flags | $flag);
+                            $coordsXml[] = $this->getCoord($coordinates, $flags | $flag);
                         }
                     }
                 }
                 break;
         }
-        return $coords;
+        return $coordsXml;
     }
 
     public function getCoord($coordinates, $flags) {
