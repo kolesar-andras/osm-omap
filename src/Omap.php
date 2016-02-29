@@ -157,8 +157,15 @@ class Omap {
                 break;
 
             case 'LineString':
+                $first = null;
                 foreach ($feature['geometry']['coordinates'] as $coordinates) {
-                    $coordsXml[] = $this->getCoord($coordinates, $flags);
+                    $flag = 0;
+                    if ($first === null) {
+                        $first = $coordinates;
+                    } else if ($coordinates == $first) {
+                        $flag = 18;
+                    }
+                    $coordsXml[] = $this->getCoord($coordinates, $flags | $flag);
                 }
                 break;
 
