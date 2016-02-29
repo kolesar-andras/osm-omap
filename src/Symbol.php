@@ -58,20 +58,23 @@ class Symbol {
             return 106; // code="521" name="High stone wall"
 
         if (in_array(@$tags['natural'], ['water']))
-            return 45; // code="301" name="Lake"
+            return [45, 0, 46]; // code="301" name="Lake"
+            // code="301.1" name="Lake, bank line"
 
         if (in_array(@$tags['natural'], ['wetland']))
             return 59; // code="311" name="Indistinct marsh"
 
         if (in_array(@$tags['natural'], ['grassland']) ||
-            in_array(@$tags['landuse'], ['meadow', 'farmland']))
+            in_array(@$tags['landuse'], ['meadow', 'farmland']) ||
+            in_array(@$tags['leisure'], ['playground']))
             return 64; // code="401" name="Open land"
 
         if (in_array(@$tags['natural'], ['heath']))
             return [66, 0, 80]; // code="403" name="Rough open land"
             // code="414" name="Distinct cultivation boundary"
 
-        if (in_array(@$tags['landuse'], ['residential', 'allotments']))
+        if (in_array(@$tags['landuse'], ['residential', 'allotments', 'farmyard']) ||
+            in_array(@$tags['leisure'], ['marina']))
             return 113; // code="527" name="Settlement"
 
         if (in_array(@$tags['landuse'], ['vineyard']))
@@ -82,6 +85,9 @@ class Symbol {
             return [69, 0, 82]; // code="406" name="Forest: slow running"
             // code="416" name="Distinct vegetation boundary"
 
+        if (in_array(@$tags['natural'], ['scrub']))
+            return 73; // code="410" name="Vegetation: very difficult to run, impassable"
+
         if (isset($tags['building']) && $tags['building'] != 'no')
             return 111; // code="526" name="Building"
 
@@ -90,6 +96,9 @@ class Symbol {
 
         if (in_array(@$tags['amenity'], ['hunting_stand']))
             return 128; // code="536" name="Small tower"
+
+        if (in_array(@$tags['man_made'], ['water_well']))
+            return 61; // code="312" name="Well"
 
         return -3; // magic number for unknown symbol
 
