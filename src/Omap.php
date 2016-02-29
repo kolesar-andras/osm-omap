@@ -97,7 +97,7 @@ class Omap {
 
     public function createObjects($feature) {
         $tags = Symbol::getTags($feature['properties']);
-        if (count($tags) == (isset($tags['osm_id']) ? 1 : 0)) return;
+        if (isset($tags['osm_id']) && count($tags) == 1) return;
         $symbol = Symbol::getSymbol($tags);
         if (is_array($symbol)) {
             $distinct = @$symbol[2];

@@ -100,6 +100,12 @@ class Symbol {
         if (in_array(@$tags['man_made'], ['water_well']))
             return 61; // code="312" name="Well"
 
+        if (isset($tags['type']) && is_numeric($tags['type']) && $tags['type'] % 50 == 0)
+            return 1; // code="102" name="Index contour"
+
+        if (isset($tags['type']) && is_numeric($tags['type']))
+            return 0; // code="101" name="Contour"
+
         return -3; // magic number for unknown symbol
 
     }
